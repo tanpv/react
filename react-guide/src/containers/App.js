@@ -1,18 +1,46 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons'
 import Cockpit from '../components/Cockpit/Cockpit'
 
 
-class App extends Component {
-  // state and data of the app
-  state = {
-    persons: [
-      { id:'aeb', name:"Manu", age:29 },
-      { id:'ghk', name:"Max", age:28 },
-      { id:'12d', name:"Stephannie", age:26 }
-    ],
-    showPersons: false
+class App extends PureComponent {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] Inside Constructor', props);
+      
+    // state and data of the app
+    this.state = {
+      persons: [
+        { id:'aeb', name:"Manu", age:29 },
+        { id:'ghk', name:"Max", age:28 },
+        { id:'12d', name:"Stephannie", age:26 }
+      ],
+      showPersons: false
+    }
+  }
+
+  componentWillMount() {
+    console.log('[App.js] Inside Component will Mount');
+  }
+
+  componentDidMount() {
+    console.log('[App.js] Inside Component did Mount');
+  }
+
+  // shouldComponentUpdate( nextProps, nextState) {
+  //   console.log('[App.js] Inside Component should update');
+  //   return nextState.persons !== this.state.persons ||
+  //   nextState.showPersons!==this.state.showPersons;
+  //   // return true;
+  // }
+
+  componentWillUpdate ( nextProps, nextState ) {
+    console.log('[App.js] Inside Component will update');
+  }
+
+  componentDidUpdate ( nextProps, nextState ) {
+    console.log('[App.js] Inside Component did update');
   }
 
   deletePersonHandler = (personIndex) => {
@@ -53,6 +81,7 @@ class App extends Component {
 
   render() {
 
+    console.log('App.js inside render')
     let persons = null;
     
     // reder content with condition
@@ -70,15 +99,16 @@ class App extends Component {
 
     return (
       <div className={classes.App}>
+        <button onClick={()=>{this.setState({showPersons: true})}}>Show Persons</button>
         
         <Cockpit
+          appTitle={this.props.title}
           showPersons={this.state.showPersons}
           persons={this.state.persons}
           clicked={this.togglePersonsHandler}
         />
 
         {persons}
-
       </div>
     );
   }

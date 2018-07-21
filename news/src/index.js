@@ -10,14 +10,27 @@ import './components/header'
 class App extends Component {
 
   state = {
-    news: JSON
+    news: JSON,
+    filtered:[]
+  }
+
+  getKeyword = (event) => {
+    let keyword = event.target.value;
+    let filtered = this.state.news.filter((item)=>{
+      return item.title.indexOf(keyword) > -1
+    })
+    this.setState({
+      filtered:filtered
+    })
   }
 
   render (){
-    return (
+    let filtered = this.state.filtered
+    let all = this.state.news
+    return (      
       <div>
-        <Header/>
-        <NewsList news={this.state.news}>
+        <Header keywords={this.getKeyword}/>
+        <NewsList news={filtered.length === 0 ? all : filtered }>
         {/* show up as props.children */}
           <h2> 
             The news are:
